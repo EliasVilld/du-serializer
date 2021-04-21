@@ -18,6 +18,7 @@ Following graphs are the results of the benchmark, encoding and decoding a simpl
 Dkjson is a popular JSON encoding/decoding library in Lua, which is embedded by default in Dual Universe.
 Pure Lua Json, is a compact pure-Lua alternative library for JSON encoding/decoding, can be found at [json.lua 0.1.2](https://github.com/rxi/json.lua), created by Rxi.
 
+This benchmark has been done in Dual Universe, on a clean programming board. The missing data for 100 and 200 calls for the dkjson and pure lua json is due to the fact it trigger the CPU OVERLOAD error in the game.
 <img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/encode.PNG" width="600">
 <img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/decode.PNG" width="600">
 <img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/data_size.PNG" width="600">
@@ -27,4 +28,5 @@ Pure Lua Json, is a compact pure-Lua alternative library for JSON encoding/decod
 # How to use
 
 <!-- Explain how to use -->
-# Examples
+# Credits
+Thanks to Arialia from the game organization Silentium
