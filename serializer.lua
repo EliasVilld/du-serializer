@@ -1,5 +1,5 @@
 -- Serialize a table to a string
-function serialize(v)
+function serialize(v,es)
     local t={}
     if type(v)=="table" then
         t[#t+1]='{'
@@ -20,8 +20,8 @@ function serialize(v)
         t[#t+1]=v and "true"or"false"
     end
 
-	-- Remove escape characters " and '
-    t=table.concat(t):gsub(".", {['"'] = "&dq;", ["'"] = "&sq;"})
+    t=table.concat(t)
+    if es then t = t:gsub(".", {['"'] = "&dq;", ["'"] = "&sq;"}) end
 
     return t
 end
