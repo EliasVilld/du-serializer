@@ -21,6 +21,7 @@ function serialize(v,es)
     end
 
     t=table.concat(t)
+	--Remove escape characters " and '
     if es then t = t:gsub(".", {['"'] = "&dq;", ["'"] = "&sq;"}) end
 
     return t
