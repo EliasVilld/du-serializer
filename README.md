@@ -29,4 +29,4 @@ This benchmark has been done in Dual Universe, on a clean programming board. The
 
 <!-- Explain how to use -->
 # Credits
-Thanks to Arialia from the game organization Silentium
+Thanks to Arialia for her collaboration from the game organization Silentium
