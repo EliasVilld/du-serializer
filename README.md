@@ -18,7 +18,9 @@ Following graphs are the results of the benchmark, encoding and decoding a simpl
 Dkjson is a popular JSON encoding/decoding library in Lua, which is embedded by default in Dual Universe.
 Pure Lua Json, is a compact pure-Lua alternative library for JSON encoding/decoding, can be found at [json.lua 0.1.2](https://github.com/rxi/json.lua), created by Rxi.
 
-![The graph of decoding benchmark results](bench/decode.PNG)![The graph of encoding benchmark results](bench/encode.PNG)![The graph of data sizing benchmark results](bench/data_size.PNG)
+<img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/encode.PNG" width="600">
+<img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/decode.PNG" width="600">
+<img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/data_size.PNG" width="600">
 
 
 <!-- How to use -->
