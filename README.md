@@ -4,7 +4,7 @@ A Lua library to serialize table in string in Dual Universe to improve performan
 
 <!--List of methods and explanation -->
 # Documentation
-#### serialize(*table* t, bool es)
+#### serialize(*table* t, *bool* es)
 Serialize a table **t** and return a string.
 Use the **es** parameter to remove escape characters, useful for transmissions (increase the character count).
 *Tables and arrays are supported, not mixed table.*
@@ -27,6 +27,25 @@ This benchmark has been done in Dual Universe, on a clean programming board. The
 
 <!-- How to use -->
 # How to use
+To use this library in Dual Universe, you can simply copy the lua code and paste it in a Library slot. See below an example :
+```lua
+local player = {
+  id = 999,
+  name = "Username",
+  pos = { 1, 2, 3},
+  org = "Org name",
+  relation = 0
+}
+
+local s = serialize(player) -->  {relation=0,org="Org name",pos={1,2,3},id=999,name="Username"}
+local t = deserialize(s)
+print(t.name) --> Username
+
+local s = serialize(player,true) -->  {id=999,org=&dq;Org name&dq;,name=&dq;Username&dq;,relation=0,pos={1,2,3}}
+local t = deserialize(s)
+print(t.name) --> Username
+```
+Keep in mind that, for Lua arrays have no order.
 
 <!-- Explain how to use -->
 # Credits
