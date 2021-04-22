@@ -4,9 +4,10 @@ A Lua library to serialize table in string in Dual Universe to improve performan
 
 <!--List of methods and explanation -->
 # Documentation
-#### serialize(*table* t)
+#### serialize(*table* t, bool es)
 Serialize a table **t** and return a string.
-*Tables and arrays are supported, not mixed table*
+Use the **es** parameter to remove escape characters, useful for transmissions (increase the character count).
+*Tables and arrays are supported, not mixed table.*
 
 #### deserialize(*string* s)
 Deserialize a serialized table as string **s** and return the table.
