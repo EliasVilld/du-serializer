@@ -22,7 +22,7 @@ function serialize(v,es)
 
     t=table.concat(t)
 	--Remove escape characters " and '
-    if es then t = t:gsub(".", {['"'] = "&dq;", ["'"] = "&sq;"}) end
+    if es then t = t:gsub(".", {['"'] = "&d;", ["'"] = "&s;"}) end
 
     return t
 end
@@ -30,7 +30,7 @@ end
 -- Deerialize a string to a table
 function deserialize(s)
 	-- Replace escape characters " and '
-    s=s:gsub("[&dqs;]+", {["&dq;"] = '"', ["&sq;"] = "'"})
+    s=s:gsub("[&dqs;]+", {["&d;"] = '"', ["&s;"] = "'"})
     
     local s="_tmp="..s
     f=load(s)
