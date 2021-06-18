@@ -1,33 +1,97 @@
--- Serialize a table to a string
-function serialize(v,es)
-    local t={}
-    if type(v)=="table" then
-        t[#t+1]='{'
+--Localize functions.
+local concat = table.concat
+local sFormat=string.format
 
-        for k,e in pairs(v)do
-            if#v==0 then t[#t+1]=k..'=' end
-            t[#t+1]=serialize(e)
-            t[#t+1]=','
+--For internal iteration, functions slightly different from the ordinary serialize and only returns the counter variable
+local function internalSerialize(v,tC,t)
+    local check = type(v)
+    if check=="table" then
+        t[tC]='{'
+        tC=tC+1
+        local tempC=tC
+        if #v==0 then
+            for k,e in pairs(v) do
+                t[tempC]=k
+                t[tempC+1]='='
+                tempC=tempC+2
+                tempC=internalSerialize(e,tempC,t)
+                t[tempC]=','
+                tempC=tempC+1
+            end
+        else
+            for k,e in pairs(v) do
+                tempC=internalSerialize(e,tempC,t)
+                t[tempC]=','
+                tempC=tempC+1
+            end
         end
-
-        if t[#t]==',' then t[#t]=nil end
-        t[#t+1]='}'
-    elseif type(v)=="number" then
-        t[#t+1]=tostring(v)
-    elseif type(v)=="string" then
-        t[#t+1]=string.format("%q",v)
-    elseif type(v)=="boolean" then
-        t[#t+1]=v and "true"or"false"
+        if tempC==tC then
+            t[tempC]='}'
+            return tempC+1
+        else
+            t[tempC-1]='}'
+            return tempC
+        end
+    elseif check=="string" then
+        t[tC]=sFormat("%q",v)
+        return tC+1
+    elseif check=="number" then
+        t[tC]=tostring(v)
+        return tC+1
+    elseif check=="boolean" then
+        t[tC]=v and "true"or"false"
+        return tC+1
     end
-
-    t=table.concat(t)
-	--Remove escape characters " and '
-    if es then t = t:gsub(".", {['"'] = "&d;", ["'"] = "&s;"}) end
-
-    return t
+    return tC
 end
 
--- Deerialize a string to a table
+function serialize(v,es)
+    local t={}
+    local tC=1
+    local check = type(v)
+    
+    if check=="table" then
+        t[tC]='{'
+        tC=tC+1
+        local tempC=tC
+        if #v==0 then
+            for k,e in pairs(v) do
+                t[tempC]=k
+                t[tempC+1]='='
+                tempC=tempC+2
+                tempC=internalSerialize(e,tempC,t)
+                t[tempC]=','
+                tempC=tempC+1
+            end
+        else
+            for k,e in pairs(v) do
+                tempC=internalSerialize(e,tempC,t)
+                t[tempC]=','
+                tempC=tempC+1
+            end
+        end
+        if tempC==tC then
+            t[tempC]='}'
+        else
+            t[tempC-1]='}'
+        end
+    elseif check=="string" then
+        t[tC]=sFormat("%q",v)
+        tC=tC+1
+    elseif check=="number" then
+        t[tC]=tostring(v)
+        tC=tC+1
+    elseif check=="boolean" then
+        t[tC]=v and "true"or"false"
+        tC=tC+1
+    end
+    
+    local s=concat(t)
+    if es then s = s:gsub(".", {['"'] = "&d;", ["'"] = "&s;"}) end
+    return s
+end
+
+-- Deserialize a string to a table
 function deserialize(s)
 	-- Replace escape characters " and '
     s=s:gsub("[&dqs;]+", {["&d;"] = '"', ["&s;"] = "'"})
