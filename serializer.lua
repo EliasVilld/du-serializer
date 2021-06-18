@@ -77,13 +77,10 @@ function serialize(v,es)
         end
     elseif check=="string" then
         t[tC]=sFormat("%q",v)
-        tC=tC+1
     elseif check=="number" then
         t[tC]=tostring(v)
-        tC=tC+1
     elseif check=="boolean" then
         t[tC]=v and "true"or"false"
-        tC=tC+1
     end
     
     local s=concat(t)
