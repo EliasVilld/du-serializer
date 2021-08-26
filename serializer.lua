@@ -100,7 +100,7 @@ end
 
 -- Deserialize a string to a table
 function deserialize(s)
-    local f=loadstring('t='..s)
+    local f=load('t='..s)
     f()
     return t
 end
