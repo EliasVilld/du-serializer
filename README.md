@@ -4,9 +4,8 @@ A Lua library to serialize table in string in Dual Universe to improve performan
 
 <!--List of methods and explanation -->
 # Documentation
-#### serialize(*table* t, *bool* es)
+#### serialize(*table* t)
 Serialize a table **t** and return a string.
-Use the **es** parameter to remove escape characters, useful for transmissions (increase the character count).
 *Tables and arrays are supported, not mixed table.*
 
 #### deserialize(*string* s)
@@ -43,9 +42,6 @@ local s = serialize(player) -->  {relation=0,org="Org name",pos={1,2,3},id=999,n
 local t = deserialize(s)
 print(t.name) --> Username
 
-local s = serialize(player,true) -->  {id=999,org=&dq;Org name&dq;,name=&dq;Username&dq;,relation=0,pos={1,2,3}}
-local t = deserialize(s)
-print(t.name) --> Username
 ```
 Keep in mind that, for Lua arrays have no order. 
 
