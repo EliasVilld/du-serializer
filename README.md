@@ -43,7 +43,7 @@ local t = deserialize(s)
 print(t.name) --> Username
 
 ```
-Keep in mind that Lua-keyed tables, they are not ordered. However, ordinary arrays using integer indexes are ordered. 
+Keep in mind that for Lua-keyed tables, they are not ordered. However, ordinary arrays using integer indexes are ordered. 
 (As seen in the above example, the pos data within that field will be ordered, but the position that the pos key takes will not.)
 
 <!-- Explain how to use -->
