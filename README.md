@@ -24,7 +24,7 @@ This benchmark has been done in Dual Universe, on a clean programming board.
 <img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/Encoding%20Performances.png" width="600">
 <img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/Decoding%20Performances.png" width="600">
 <img src="https://github.com/EliasVilld/du-serializer/blob/main/bench/Encoded%20Data%20Size.png" width="600">
-
+*Benchmark updated the 09/25/2021*
 
 <!-- How to use -->
 # How to use
