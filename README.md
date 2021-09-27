@@ -6,7 +6,7 @@ A Lua library to serialize table in string in Dual Universe to improve performan
 # Documentation
 #### serialize(*table* t)
 Serialize a table **t** and return a string.
-*Tables and arrays are supported, not mixed table.*
+*Tables and arrays are supported, not mixed table.* See [serializer_spec.lua](serializer_spec.lua) for supported and unsupported cases.
 
 #### deserialize(*string* s)
 Deserialize a serialized table as string **s** and return the table.
