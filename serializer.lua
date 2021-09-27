@@ -51,56 +51,56 @@ local function internalSerialize(v,tC,t)
   return tC
 end
 function serialize(v)
-    local t={}
-    local tC=1
-    local check = type(v)
-    local intSerial=internalSerialize
-    if check=='table' then
-        t[tC]='{'
-        tC=tC+1
-        local tempC=tC
-        if #v==0 then
-            for k,e in pairs(v) do
-              if type(k)~='number' then
-                t[tempC]=k
-                t[tempC+1]='='
-                tempC=tempC+2
-              else
-                t[tempC]='['
-                t[tempC+1]=k
-                t[tempC+2]=']='
-                tempC=tempC+3
-              end
-                tempC=intSerial(e,tempC,t)
-                t[tempC]=','
-                tempC=tempC+1
-            end
+  local t={}
+  local tC=1
+  local check = type(v)
+  local intSerial=internalSerialize
+  if check=='table' then
+    t[tC]='{'
+    tC=tC+1
+    local tempC=tC
+    if #v==0 then
+      for k,e in pairs(v) do
+        if type(k)~='number' then
+          t[tempC]=k
+          t[tempC+1]='='
+          tempC=tempC+2
         else
-            for k,e in pairs(v) do
-                tempC=intSerial(e,tempC,t)
-                t[tempC]=','
-                tempC=tempC+1
-            end
+          t[tempC]='['
+          t[tempC+1]=k
+          t[tempC+2]=']='
+          tempC=tempC+3
         end
-        if tempC==tC then
-            t[tempC]='}'
-        else
-            t[tempC-1]='}'
-        end
-    elseif check=='string' then
-        t[tC]=sFormat("%q",v)
-    elseif check=='number' then
-        t[tC]=tostring(v)
+        tempC=intSerial(e,tempC,t)
+        t[tempC]=','
+        tempC=tempC+1
+      end
     else
-        t[tC]=v and 'true' or 'false'
+      for k,e in pairs(v) do
+        tempC=intSerial(e,tempC,t)
+        t[tempC]=','
+        tempC=tempC+1
+      end
     end
+    if tempC==tC then
+      t[tempC]='}'
+    else
+      t[tempC-1]='}'
+    end
+  elseif check=='string' then
+    t[tC]=sFormat("%q",v)
+  elseif check=='number' then
+    t[tC]=tostring(v)
+  else
+    t[tC]=v and 'true' or 'false'
+  end
 
-    return concat(t)
+  return concat(t)
 end
 
 -- Deserialize a string to a table
 function deserialize(s)
-    local f=load('t='..s)
-    f()
-    return t
+  local f=load('t='..s)
+  f()
+  return t
 end
