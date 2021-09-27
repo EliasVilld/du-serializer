@@ -48,7 +48,6 @@ local function internalSerialize(v,tC,t)
     t[tC]=v and 'true' or 'false'
     return tC+1
   end
-  return tC
 end
 function serialize(v)
   local t={}
