@@ -1,105 +1,86 @@
---Localize functions.
 local concat = table.concat
-local sFormat=string.format
---For internal iteration, functions slightly different from the ordinary serialize and only returns the counter variable
-local function internalSerialize(v,tC,t)
-  local check = type(v)
-  local intSerial=internalSerialize
-  if check=='table' then
-    t[tC]='{'
-    local tempC=tC+1
-    if #v==0 then
-      for k,e in pairs(v) do
-        if type(k)~='number' then
-          t[tempC]=k
-          t[tempC+1]='='
-          tempC=tempC+2
-        else
-          t[tempC]='['
-          t[tempC+1]=k
-          t[tempC+2]=']='
-          tempC=tempC+3
-        end
-        tempC=intSerial(e,tempC,t)
-        t[tempC]=','
-        tempC=tempC+1
-      end
-    else
-      for k,e in pairs(v) do
-        tempC=intSerial(e,tempC,t)
-        t[tempC]=','
-        tempC=tempC+1
-      end
-    end
-    if tempC==(tC+1) then
-      t[tempC]='}'
-      return tempC+1
-    else
-      t[tempC-1]='}'
-      return tempC
-    end
-  elseif check=='string' then
-    t[tC]=sFormat("%q",v)
-    return tC+1
-  elseif check=='number' then
-    t[tC]=tostring(v)
-    return tC+1
-  else
-    t[tC]=v and 'true' or 'false'
-    return tC+1
-  end
-end
-function serialize(v)
-  local t={}
-  local tC=1
-  local check = type(v)
-  local intSerial=internalSerialize
-  if check=='table' then
-    t[tC]='{'
-    tC=tC+1
-    local tempC=tC
-    if #v==0 then
-      for k,e in pairs(v) do
-        if type(k)~='number' then
-          t[tempC]=k
-          t[tempC+1]='='
-          tempC=tempC+2
-        else
-          t[tempC]='['
-          t[tempC+1]=k
-          t[tempC+2]=']='
-          tempC=tempC+3
-        end
-        tempC=intSerial(e,tempC,t)
-        t[tempC]=','
-        tempC=tempC+1
-      end
-    else
-      for k,e in pairs(v) do
-        tempC=intSerial(e,tempC,t)
-        t[tempC]=','
-        tempC=tempC+1
-      end
-    end
-    if tempC==tC then
-      t[tempC]='}'
-    else
-      t[tempC-1]='}'
-    end
-  elseif check=='string' then
-    t[tC]=sFormat("%q",v)
-  elseif check=='number' then
-    t[tC]=tostring(v)
-  else
-    t[tC]=v and 'true' or 'false'
-  end
 
-  return concat(t)
+local function internalSerialize(table, tC, t)
+    t[tC] = "{"
+    tC = tC + 1
+    if #table == 0 then
+        local hasValue = false
+        for key, value in pairs(table) do
+            hasValue = true
+            local keyType = type(key)
+            if keyType == "string" then
+                t[tC] = key .. "="
+            elseif keyType == "number" then
+                t[tC] = "[" .. key .. "]="
+            elseif keyType == "boolean" then
+                t[tC] = "[" .. tostring(key) .. "]="
+            else
+                t[tC] = "notsupported="
+            end
+            tC = tC + 1
+
+            local check = type(value)
+            if check == "table" then
+                tC = newNewInternalSerialize(value, tC, t)
+            elseif check == "string" then
+                t[tC] = '"' .. value .. '"'
+            elseif check == "number" then
+                t[tC] = value
+            elseif check == "boolean" then
+                t[tC] = tostring(value)
+            else
+                t[tC] = '"Not Supported"'
+            end
+            t[tC + 1] = ","
+            tC = tC + 2
+        end
+        if hasValue then
+            tC = tC - 1
+        end
+    else
+        for i = 1, #table do
+            local value = table[i]
+            local check = type(value)
+            if check == "table" then
+                tC = newNewInternalSerialize(value, tC, t)
+            elseif check == "string" then
+                t[tC] = '"' .. value .. '"'
+            elseif check == "number" then
+                t[tC] = value
+            elseif check == "boolean" then
+                t[tC] = tostring(value)
+            else
+                t[tC] = '"Not Supported"'
+            end
+            t[tC + 1] = ","
+            tC = tC + 2
+        end
+        tC = tC - 1
+    end
+    t[tC] = "}"
+    return tC
 end
 
--- Deserialize a string to a table
+function serialize(value)
+    local t = {}
+    local check = type(value)
+
+    if check == "table" then
+        internalSerialize(value, 1, t)
+    elseif check == "string" then
+        return '"' .. value .. '"'
+    elseif check == "number" then
+        return value
+    elseif check == "boolean" then
+        return tostring(value)
+    else
+        return '"Not Supported"'
+    end
+
+    return concat(t)
+end
+
 function deserialize(s)
-  local f=load('t='..s)
-  f()
-  return t
+    return load("return " .. s)()
 end
+
