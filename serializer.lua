@@ -21,7 +21,7 @@ local function internalSerialize(table, tC, t)
 
             local check = type(value)
             if check == "table" then
-                tC = newNewInternalSerialize(value, tC, t)
+                tC = internalSerialize(value, tC, t)
             elseif check == "string" then
                 t[tC] = '"' .. value .. '"'
             elseif check == "number" then
@@ -42,7 +42,7 @@ local function internalSerialize(table, tC, t)
             local value = table[i]
             local check = type(value)
             if check == "table" then
-                tC = newNewInternalSerialize(value, tC, t)
+                tC = internalSerialize(value, tC, t)
             elseif check == "string" then
                 t[tC] = '"' .. value .. '"'
             elseif check == "number" then
