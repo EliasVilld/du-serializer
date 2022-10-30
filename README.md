@@ -1,5 +1,8 @@
 <!-- Introduction -->
 # du-serializer
+
+[![Tests](https://github.com/EliasVilld/du-serializer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/EliasVilld/du-serializer/actions/workflows/test.yml)
+
 A Lua library to serialize table in string in Dual Universe to improve performances and reduce size to store data in databanks or for transmissions.
 
 <!--List of methods and explanation -->

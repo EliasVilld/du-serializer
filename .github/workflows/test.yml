@@ -1,0 +1,42 @@
+name: Tests
+
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+#        luaVersion: [ "5.3" ]
+        luaVersion: [ "5.3", "5.4" ]
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+
+      - uses: leafo/gh-actions-lua@v9.1.0
+        with:
+          luaVersion: ${{ matrix.luaVersion }}
+
+      - uses: leafo/gh-actions-luarocks@v4.3.0
+
+      - name: Setup
+        run: |
+          luarocks install luaunit
+          luarocks install luacov
+          mkdir results
+
+      - name: Test
+        run: lua -lluacov ./serializer_spec.lua -o junit -n results/SerializerSpec.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2.2.0
+        if: always()
+        with:
+          junit_files: "results/**/*.xml"
