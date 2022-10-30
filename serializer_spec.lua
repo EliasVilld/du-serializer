@@ -85,6 +85,10 @@ function TestArray.testString()
   local input = {"string1", "string2"}
   verifySerializeDeserialize(input)
 end
+function TestArray.testStringSymbols()
+  local input = {"'", '"', "[[", "]]"}
+  verifySerializeDeserialize(input)
+end
 function TestArray.testArray()
   -- second value chosen to hit special handling in recursive call
   local input = {{"array1"}, {}}
@@ -99,7 +103,6 @@ end
 --- Test serializing tables.
 TestTable = {}
 function TestTable.testBooleanKey()
-  luaunit.skip("Not supported: ")
   local input = {
     [false] = 1
   }
@@ -119,6 +122,14 @@ function TestTable.testNumberFloat()
 end
 function TestTable.testString()
   local input = {key = "value"}
+  verifySerializeDeserialize(input)
+end
+function TestTable.testStringSpaces()
+  local input = {["key spaces"] = "value spaces"}
+  verifySerializeDeserialize(input)
+end
+function TestTable.testStringSymbols()
+  local input = {["\"'[[]]"] = "\" ' [[ ]]"}
   verifySerializeDeserialize(input)
 end
 function TestTable.testArrayKey()

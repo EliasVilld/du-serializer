@@ -1,4 +1,5 @@
 local concat = table.concat
+local sFormat=string.format
 
 local function internalSerialize(table, tC, t)
     t[tC] = "{"
@@ -9,7 +10,7 @@ local function internalSerialize(table, tC, t)
             hasValue = true
             local keyType = type(key)
             if keyType == "string" then
-                t[tC] = key .. "="
+                t[tC] = sFormat("[%q]=", key)
             elseif keyType == "number" then
                 t[tC] = "[" .. key .. "]="
             elseif keyType == "boolean" then
@@ -23,7 +24,7 @@ local function internalSerialize(table, tC, t)
             if check == "table" then
                 tC = internalSerialize(value, tC, t)
             elseif check == "string" then
-                t[tC] = '"' .. value .. '"'
+                t[tC] = sFormat("%q", value)
             elseif check == "number" then
                 t[tC] = value
             elseif check == "boolean" then
@@ -44,7 +45,7 @@ local function internalSerialize(table, tC, t)
             if check == "table" then
                 tC = internalSerialize(value, tC, t)
             elseif check == "string" then
-                t[tC] = '"' .. value .. '"'
+                t[tC] = sFormat("%q", value)
             elseif check == "number" then
                 t[tC] = value
             elseif check == "boolean" then
@@ -68,7 +69,7 @@ function serialize(value)
     if check == "table" then
         internalSerialize(value, 1, t)
     elseif check == "string" then
-        return '"' .. value .. '"'
+        return sFormat("%q", value)
     elseif check == "number" then
         return value
     elseif check == "boolean" then
